@@ -35,13 +35,13 @@ var fooEntries = []*LogEntry{
 }
 
 func testFooSection(t *testing.T, s *SectionStats) {
-	expectedBytes := map[string]int64{
-		"1.1.1.1": int64(123 + 321),
-		"1.1.1.2": int64(987),
+	expectedBytes := map[string]uint64{
+		"1.1.1.1": uint64(123 + 321),
+		"1.1.1.2": uint64(987),
 	}
 	assert.Equal(t, "foo", s.SectionName)
 	assert.EqualValues(t, expectedBytes, s.BytesPerClient)
-	assert.Equal(t, map[string]int{"2xx": 2, "4xx": 1}, s.ReturnedCode)
+	assert.Equal(t, map[string]uint{"2xx": 2, "4xx": 1}, s.ReturnedCode)
 	assert.EqualValues(t, len(fooEntries), s.HitCount)
 }
 
@@ -61,12 +61,12 @@ var barEntries = []*LogEntry{
 }
 
 func testBarSection(t *testing.T, s *SectionStats) {
-	expectedBytes := map[string]int64{
-		"1.1.2.1": int64(12 + 4096),
+	expectedBytes := map[string]uint64{
+		"1.1.2.1": uint64(12 + 4096),
 	}
 	assert.Equal(t, "bar", s.SectionName)
 	assert.EqualValues(t, expectedBytes, s.BytesPerClient)
-	assert.Equal(t, map[string]int{"3xx": 1, "4xx": 1}, s.ReturnedCode)
+	assert.Equal(t, map[string]uint{"3xx": 1, "4xx": 1}, s.ReturnedCode)
 	assert.EqualValues(t, len(barEntries), s.HitCount)
 }
 

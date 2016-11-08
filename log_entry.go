@@ -12,7 +12,7 @@ import (
 type HTTPInfo struct {
 	Method     string
 	Version    string
-	ReturnCode int
+	ReturnCode uint
 }
 
 // LogEntry holds all the information contained in a Common Log Format line
@@ -23,7 +23,7 @@ type LogEntry struct {
 	Timestamp      time.Time
 	HTTP           HTTPInfo
 	URL            string
-	SizeBytes      int64
+	SizeBytes      uint64
 }
 
 // Log line regexp. NOTE: capture group names are there for readability
@@ -54,8 +54,8 @@ func NewLogEntry(line string) (*LogEntry, error) {
 		return nil, fmt.Errorf("log line has invalid timestamp format (%s)", err)
 	}
 
-	httpRet, _ := strconv.ParseInt(elts[8], 10, 32)
-	sizeBytes, _ := strconv.ParseInt(elts[9], 10, 64)
+	httpRet, _ := strconv.ParseUint(elts[8], 10, 32)
+	sizeBytes, _ := strconv.ParseUint(elts[9], 10, 64)
 
 	return &LogEntry{
 		ClientIP:       elts[1],
@@ -65,7 +65,7 @@ func NewLogEntry(line string) (*LogEntry, error) {
 		HTTP: HTTPInfo{
 			Method:     elts[5],
 			Version:    elts[7],
-			ReturnCode: int(httpRet),
+			ReturnCode: uint(httpRet),
 		},
 		URL:       elts[6],
 		SizeBytes: sizeBytes,

@@ -9,12 +9,12 @@ import (
 type SectionStats struct {
 	SectionName    string
 	HitCount       int64
-	ReturnedCode   map[string]int
-	BytesPerClient map[string]int64
+	ReturnedCode   map[string]uint
+	BytesPerClient map[string]uint64
 }
 
 // Helper function: transform HTTP return code into code family (1xx, 2xx, 3xx, etc...)
-func codeFamily(returnCode int) string {
+func codeFamily(returnCode uint) string {
 	c := returnCode / 100
 	return fmt.Sprintf("%dxx", c)
 }
@@ -22,8 +22,8 @@ func codeFamily(returnCode int) string {
 func newSectionStats(name string) *SectionStats {
 	return &SectionStats{
 		SectionName:    name,
-		ReturnedCode:   make(map[string]int),
-		BytesPerClient: make(map[string]int64),
+		ReturnedCode:   make(map[string]uint),
+		BytesPerClient: make(map[string]uint64),
 	}
 }
 
