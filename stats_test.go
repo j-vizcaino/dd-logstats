@@ -88,6 +88,7 @@ func TestStatsAddLogEntry(t *testing.T) {
 	assert.Len(t, s.Sections, 1)
 	assert.Len(t, s.ByName, 1)
 	assert.Equal(t, s.Sections[0], s.ByName["bar"])
+	assert.EqualValues(t, len(barEntries), s.TotalHits)
 	testBarSection(t, s.ByName["bar"])
 
 	for _, l := range fooEntries {
@@ -95,6 +96,7 @@ func TestStatsAddLogEntry(t *testing.T) {
 	}
 	assert.Len(t, s.Sections, 2)
 	assert.Len(t, s.ByName, 2)
+	assert.EqualValues(t, len(barEntries)+len(fooEntries), s.TotalHits)
 	assert.NotNil(t, s.ByName["foo"])
 	testFooSection(t, s.ByName["foo"])
 

@@ -8,7 +8,7 @@ import (
 // SectionStats holds statistics for a given URL section
 type SectionStats struct {
 	SectionName    string
-	HitCount       int64
+	HitCount       uint64
 	ReturnedCode   map[string]uint
 	BytesPerClient map[string]uint64
 }
@@ -38,8 +38,9 @@ func (s *SectionStats) AddLogEntry(l *LogEntry) {
 
 // Stats holds statistics grouped by URL section
 type Stats struct {
-	Sections []*SectionStats
-	ByName   map[string]*SectionStats
+	Sections  []*SectionStats
+	ByName    map[string]*SectionStats
+	TotalHits uint64
 }
 
 // NewStats creates a new empty Stats object
@@ -60,6 +61,7 @@ func (h *Stats) AddLogEntry(l *LogEntry) {
 		h.ByName[section] = s
 	}
 	s.AddLogEntry(l)
+	h.TotalHits++
 }
 
 // SectionsByHits returns a slice of SectionStats sorted by hit count.
