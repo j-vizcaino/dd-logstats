@@ -81,6 +81,8 @@ func TestSectionStatsAddLogEntry(t *testing.T) {
 
 func TestStatsAddLogEntry(t *testing.T) {
 	s := NewStats()
+	assert.True(t, s.DateEnd.IsZero())
+	assert.False(t, s.DateStart.IsZero())
 
 	for _, l := range barEntries {
 		s.AddLogEntry(l)

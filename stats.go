@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sort"
+	"time"
 )
 
 // SectionStats holds statistics for a given URL section
@@ -41,12 +42,15 @@ type Stats struct {
 	Sections  []*SectionStats
 	ByName    map[string]*SectionStats
 	TotalHits uint64
+	DateStart time.Time
+	DateEnd   time.Time
 }
 
 // NewStats creates a new empty Stats object
 func NewStats() *Stats {
 	return &Stats{
-		ByName: make(map[string]*SectionStats),
+		ByName:    make(map[string]*SectionStats),
+		DateStart: time.Now(),
 	}
 }
 
