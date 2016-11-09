@@ -33,7 +33,7 @@ var logFormat = regexp.MustCompile("^(?P<ClientIP>[^ ]+) " +
 	"\\[(?P<Timestamp>[^ ]+ [^ ]+)\\] " +
 	"\"(?P<HTTPMethod>[A-Za-z]+) (?P<URL>/[^ ]*) (?P<HTTPVersion>[^\"]+)\" " +
 	"(?P<HTTPReturnCode>[1-5]\\d{2}) " +
-	"(?P<SizeBytes>\\d+)$")
+	"(?P<SizeBytes>\\d+)")
 
 const logEltCount = 9
 
