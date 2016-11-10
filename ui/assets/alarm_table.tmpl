@@ -1,0 +1,20 @@
+{{define "alarm_table"}}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>Alarms history</h3>
+  </div>
+  {{ if .Alarms }}
+  <table class="table">
+  <tbody>
+    {{range .Alarms}}
+    <tr><td>{{.}}</td></tr>
+    {{end}}
+  </tody>
+  </table>
+  {{else}}
+  <div class="panel-body">
+    <p class="text-info">No traffic alarm so far.</p>
+  </div>
+  {{end}}
+</div>
+{{end}}
