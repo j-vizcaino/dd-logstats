@@ -1,4 +1,4 @@
-package main
+package engine
 
 // HitTracker tracks n number of hits.
 type HitTracker struct {

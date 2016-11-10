@@ -1,15 +1,17 @@
 #!/usr/bin/make -f
 
 GLIDE=$(shell which glide)
-SRC=$(shell ls -1 *.go | grep -v '_test.go')
+PACKAGES=./engine ./ui
+SRC=$(shell find . -maxdepth 2 -type f -name '*.go' -a ! -name '*_test.go')
+SRC_TEST=$(shell find . -maxdepth 2 -type f -name '*_test.go')
 
 all: dd-logstats deps
 
 deps:
 	glide install
 
-test:
-	go test -v
+test: $(SRC) $(SRC_TEST)
+	go test -v $(PACKAGES)
 
 dd-logstats: deps $(SRC)
 	go build -o $@

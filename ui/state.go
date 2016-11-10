@@ -1,9 +1,12 @@
-package main
+package ui
 
-import "fmt"
+import (
+	"dd-logstats/engine"
+	"fmt"
+)
 
 type State struct {
-	CurrentStats  *Stats
+	CurrentStats  *engine.Stats
 	Alarms        []string
 	AlarmIsActive bool
 }
@@ -14,7 +17,7 @@ type AlarmState struct {
 }
 
 type StateUpdate struct {
-	NewStats   *Stats
+	NewStats   *engine.Stats
 	AlarmState AlarmState
 }
 

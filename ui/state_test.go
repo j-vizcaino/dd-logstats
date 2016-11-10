@@ -1,6 +1,7 @@
-package main
+package ui
 
 import (
+	"dd-logstats/engine"
 	"fmt"
 	"testing"
 
@@ -14,7 +15,7 @@ func TestStateUpdate(t *testing.T) {
 	assert.False(t, s.AlarmIsActive)
 	assert.False(t, s.IsValid())
 
-	st := NewStats()
+	st := engine.NewStats()
 	update := StateUpdate{
 		NewStats: st,
 		AlarmState: AlarmState{
