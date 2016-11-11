@@ -1,7 +1,7 @@
 {{define "alarm_table"}}
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3>Alarms history</h3>
+    <h3>Alarms history (UTC)</h3>
   </div>
   {{if .Alarms}}
   <table class="table">
@@ -15,14 +15,14 @@
       <i class="text-info glyphicon glyphicon-info-sign"></i>
       {{end}}
       </td>
-      <td>{{.Timestamp}}</td>
+      <td>{{.Timestamp.Format "2006-01-02 15:04:05"}}</td>
       <td>
       {{if .Active}}
       High traffic generated an alarm
       {{else}}
       Traffic returned to normal
       {{end}}
-      (avg hits={{.AverageHits}})
+      (avg&nbsp;hits={{.AverageHits}})
       </td>
     </tr>
     {{end}}

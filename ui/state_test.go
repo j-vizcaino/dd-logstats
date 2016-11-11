@@ -27,7 +27,7 @@ func TestStateUpdate(t *testing.T) {
 	// Change of state → generate an alarm
 	assert.True(t, s.AlarmIsActive)
 	assert.Len(t, s.Alarms, 1)
-	assert.Equal(t, Alarm{Timestamp: st.DateEnd, Active: true, AverageHits: 15}, s.Alarms[0])
+	assert.Equal(t, Alarm{Timestamp: st.DateEnd.UTC(), Active: true, AverageHits: 15}, s.Alarms[0])
 
 	s.Update(st, true, 18)
 	assert.True(t, s.AlarmIsActive)
@@ -39,5 +39,5 @@ func TestStateUpdate(t *testing.T) {
 	// Recovery
 	assert.False(t, s.AlarmIsActive)
 	assert.Len(t, s.Alarms, 2)
-	assert.Equal(t, Alarm{Timestamp: st.DateEnd, Active: false, AverageHits: 10}, s.Alarms[1])
+	assert.Equal(t, Alarm{Timestamp: st.DateEnd.UTC(), Active: false, AverageHits: 10}, s.Alarms[1])
 }

@@ -1,7 +1,13 @@
 {{define "alarm_banner"}}
 {{if .AlarmIsActive}}
-<div class="alert alert-danger" role="alert">High traffic: alarm is <strong>ON</strong></div>
+<div class="alert alert-danger" role="alert">
+    <strong><i class="glyphicon glyphicon-exclamation-sign"></i></strong> 
+    High traffic: alarm is <strong>ON</strong>
+</div>
 {{else}}
-<div class="alert alert-success" role="alert">Traffic is normal</div>
+<div class="alert alert-success" role="alert">
+    <strong class="text-success"><i class="glyphicon glyphicon-ok"></i></strong>
+    Traffic is normal
+</div>
 {{end}}
 {{end}}

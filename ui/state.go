@@ -23,7 +23,7 @@ func (s *State) Update(stats *engine.Stats, alarmIsActive bool, averageHitCount 
 		return
 	}
 	s.Alarms = append(s.Alarms, Alarm{
-		Timestamp:   s.CurrentStats.DateEnd,
+		Timestamp:   s.CurrentStats.DateEnd.UTC(),
 		Active:      alarmIsActive,
 		AverageHits: averageHitCount,
 	})
