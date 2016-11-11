@@ -10,6 +10,7 @@ import (
 func render(t *testing.T, s *State) string {
 	r, err := NewRenderer("assets")
 	assert.NoError(t, err)
+	assert.NotEmpty(t, r.Result())
 
 	err = r.Render(s)
 	assert.NoError(t, err)

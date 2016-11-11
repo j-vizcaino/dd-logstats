@@ -19,22 +19,25 @@ type renderer struct {
 }
 
 func NewRenderer(baseDir string) (Renderer, error) {
-
 	t, err := template.ParseGlob(filepath.Join(baseDir, "*.tmpl"))
 	if err != nil {
 		return nil, err
 	}
-	return &renderer{
-		template: t,
-	}, nil
+
+	ret := &renderer{template: t}
+	err = ret.Render(&State{})
+	if err != nil {
+		return nil, err
+	}
+	return ret, nil
 }
 
 func (r *renderer) Render(s *State) error {
-	const IndexTemplateName = "index"
+	const indexTemplateName = "index"
 
 	buf := make([]byte, 0, 4096)
 	wr := bytes.NewBuffer(buf)
-	err := r.template.ExecuteTemplate(wr, IndexTemplateName, s)
+	err := r.template.ExecuteTemplate(wr, indexTemplateName, s)
 	if err != nil {
 		return err
 	}
