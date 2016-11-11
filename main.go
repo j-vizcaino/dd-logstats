@@ -7,6 +7,7 @@ import (
 	"flag"
 	"net/http"
 	"os"
+	"syscall"
 	"time"
 
 	"github.com/golang/glog"
@@ -22,15 +23,17 @@ const (
 var flagAlarmTimeFrame time.Duration
 var flagAlarmThreshold uint64
 var flagStatsPeriod time.Duration
+var flagServeAddr string
 
 func init() {
 	flag.DurationVar(&flagAlarmTimeFrame, "alarm-timeframe", time.Duration(2*time.Minute), "consider the total hits for this period of time when raising an alarm")
 	flag.Uint64Var(&flagAlarmThreshold, "alarm-threshold", 100, "raise an alarm when the average hit count between [now - alarm_timeframe; now] exceeds the given value")
 	flag.DurationVar(&flagStatsPeriod, "stats-period", time.Duration(10*time.Second), "statistics aggregation period")
+	flag.StringVar(&flagServeAddr, "serve", ":8080", "address to serve requests")
 }
 
 func readLogs(out chan *engine.LogEntry) {
-	glog.Info("Expecting log lines on standard input")
+	glog.Info("Reading log lines from standard input")
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -106,13 +109,18 @@ func (ah appHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func IndexHandler(renderer ui.Renderer, w http.ResponseWriter, r *http.Request) (int, error) {
+func indexHandler(renderer ui.Renderer, w http.ResponseWriter, r *http.Request) (int, error) {
 	return w.Write([]byte(renderer.Result()))
 }
 
 func main() {
 
+	// force logging to stderr (glog)
+	flag.Set("logtostderr", "true")
 	flag.Parse()
+
+	glog.Infoln("Hits statistics are refreshed every", flagStatsPeriod)
+	glog.Infoln("Alarm is raised when average hit count over the last", flagAlarmTimeFrame, "exceeds", flagAlarmThreshold, "hits")
 
 	logs := make(chan *engine.LogEntry, logEntryBufferSize)
 	quit, done := make(chan bool), make(chan bool)
@@ -128,13 +136,17 @@ func main() {
 
 	mux := web.New()
 	mux.Use(logger)
-	mux.Get("/", appHandler{context, IndexHandler})
+	mux.Get("/", appHandler{context, indexHandler})
 	mux.Get("/assets/*", http.FileServer(http.Dir("ui")))
 
-	err = graceful.ListenAndServe(":8080", mux)
+	glog.Infoln("User interface served on", flagServeAddr, "(HTTP)")
+
+	graceful.AddSignal(syscall.SIGTERM, syscall.SIGINT)
+	err = graceful.ListenAndServe(flagServeAddr, mux)
 	if err != nil {
 		glog.Errorf("Unable to start webserver (%s)", err)
 	}
+	glog.Infoln("Shutting down. Waiting for goroutines to end.")
 	close(quit)
 	<-done
 }
