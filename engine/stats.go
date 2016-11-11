@@ -50,31 +50,36 @@ type Stats struct {
 func NewStats() *Stats {
 	return &Stats{
 		ByName:    make(map[string]*SectionStats),
-		DateStart: time.Now(),
+		DateStart: time.Now().UTC(),
 	}
 }
 
+// Finalize the stats object, seting DateEnd
+func (s *Stats) Finalize() {
+	s.DateEnd = time.Now().UTC()
+}
+
 // AddLogEntry adds a new LogEntry to the stats
-func (h *Stats) AddLogEntry(l *LogEntry) {
+func (s *Stats) AddLogEntry(l *LogEntry) {
 	section := l.URLSection()
 
-	s, ok := h.ByName[section]
+	ss, ok := s.ByName[section]
 	if !ok {
-		s = newSectionStats(section)
-		h.Sections = append(h.Sections, s)
-		h.ByName[section] = s
+		ss = newSectionStats(section)
+		s.Sections = append(s.Sections, ss)
+		s.ByName[section] = ss
 	}
-	s.AddLogEntry(l)
-	h.TotalHits++
+	ss.AddLogEntry(l)
+	s.TotalHits++
 }
 
 // SectionsByHits returns a slice of SectionStats sorted by hit count.
 // The section with the most hits comes first, the one with the least, last
-func (h *Stats) SectionsByHits() []*SectionStats {
+func (s *Stats) SectionsByHits() []*SectionStats {
 	moreHits := func(a, b *SectionStats) bool {
 		return a.HitCount > b.HitCount
 	}
-	stats := h.Sections
+	stats := s.Sections
 	by(moreHits).Sort(stats)
 	return stats
 }

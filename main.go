@@ -59,7 +59,7 @@ func runTrackers(logs chan *engine.LogEntry, context ui.Renderer, quit, done cha
 
 		case <-ticker.C:
 			ht.AddHits(stats.TotalHits)
-			stats.DateEnd = time.Now()
+			stats.Finalize()
 			// Update state
 			uiState.Update(stats, ht.IsAboveThreshold(), ht.AverageHitCount())
 			// Render template

@@ -61,7 +61,7 @@ func NewLogEntry(line string) (*LogEntry, error) {
 		ClientIP:       elts[1],
 		UserIdentifier: elts[2],
 		UserID:         elts[3],
-		Timestamp:      ts,
+		Timestamp:      ts.UTC(),
 		HTTP: HTTPInfo{
 			Method:     elts[5],
 			Version:    elts[7],

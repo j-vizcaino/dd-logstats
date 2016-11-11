@@ -15,7 +15,7 @@ func TestNewLogEntry(t *testing.T) {
 	assert.Equal(t, "127.0.0.1", entry.ClientIP)
 	assert.Equal(t, "user-identifier", entry.UserIdentifier)
 	assert.Equal(t, "frank", entry.UserID)
-	assert.Equal(t, "Tue, 10 Oct 2000 13:55:36 -0700", entry.Timestamp.Format(time.RFC1123Z))
+	assert.Equal(t, "Tue, 10 Oct 2000 20:55:36 +0000", entry.Timestamp.Format(time.RFC1123Z))
 	assert.Equal(t, HTTPInfo{
 		Method:     "GET",
 		Version:    "HTTP/1.0",

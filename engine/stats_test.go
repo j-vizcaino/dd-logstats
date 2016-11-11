@@ -2,6 +2,7 @@ package engine
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -83,6 +84,7 @@ func TestStatsAddLogEntry(t *testing.T) {
 	s := NewStats()
 	assert.True(t, s.DateEnd.IsZero())
 	assert.False(t, s.DateStart.IsZero())
+	assert.Equal(t, s.DateStart.Location(), time.UTC)
 
 	for _, l := range barEntries {
 		s.AddLogEntry(l)
@@ -101,6 +103,10 @@ func TestStatsAddLogEntry(t *testing.T) {
 	assert.EqualValues(t, len(barEntries)+len(fooEntries), s.TotalHits)
 	assert.NotNil(t, s.ByName["foo"])
 	testFooSection(t, s.ByName["foo"])
+
+	s.Finalize()
+	assert.False(t, s.DateEnd.IsZero())
+	assert.Equal(t, s.DateEnd.Location(), time.UTC)
 
 	hits := s.SectionsByHits()
 	assert.Len(t, hits, 2)
