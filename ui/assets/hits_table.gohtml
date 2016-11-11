@@ -1,0 +1,55 @@
+{{ define "hits_table" }}
+{{ $dateFormat := "2006-01-02 15:04:05" }}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>Site hits
+    <small>
+    {{ if . }}
+      {{.DateStart.Format $dateFormat}} → {{.DateEnd.Format $dateFormat}}, Total hits={{.TotalHits}}
+    {{ else }}
+      (no stats yet)
+    {{ end }}
+    </small>
+    </h3>
+  </div>
+  {{ if . }}
+  <table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Section</th>
+      <th>Hits</th>
+      <th>Statuses</th>
+      <th>Clients</th>
+    </tr>
+  </thead>
+  <tbody>
+  {{ $sections := .SectionsByHits }}
+  {{ range $sections }} 
+  <tr>
+    <td>{{ .SectionName }}</td>
+    <td>{{ .HitCount }}</td>
+    <td>
+      <small>
+      <ul>
+        {{ range $code, $hits := .ReturnedCode }}
+        <li><tt>{{ $code }}</tt>: {{ $hits }}</li>
+        {{ end }}
+      <ul>
+      </small>
+    </td>
+    <td>
+      <small>
+      <ul>
+        {{ range $client, $bytes := .BytesPerClient }}
+        <li><tt>{{ $client }}</tt>: {{$bytes}}B</li>
+        {{ end }}
+      </ul>
+      </small>
+    </td>
+  </tr>
+  {{ end }}
+  </tbody>
+  </table>
+  {{ end }}
+</div>
+{{end}}
