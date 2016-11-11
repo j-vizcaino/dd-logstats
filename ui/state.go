@@ -2,44 +2,32 @@ package ui
 
 import (
 	"dd-logstats/engine"
-	"fmt"
+	"time"
 )
 
+type Alarm struct {
+	Timestamp   time.Time
+	AverageHits uint64
+	Active      bool
+}
 type State struct {
 	CurrentStats  *engine.Stats
-	Alarms        []string
+	Alarms        []Alarm
 	AlarmIsActive bool
 }
 
-type AlarmState struct {
-	IsActive        bool
-	AverageHitCount uint64
-}
+func (s *State) Update(stats *engine.Stats, alarmIsActive bool, averageHitCount uint64) {
+	s.CurrentStats = stats
 
-type StateUpdate struct {
-	NewStats   *engine.Stats
-	AlarmState AlarmState
-}
-
-const (
-	strAlarmTriggered = "High traffic generated an alarm (avg hits=%d)"
-	strAlarmRecovered = "Traffic returned to normal (avg hits=%d)"
-)
-
-func (s *State) Update(u *StateUpdate) {
-	s.CurrentStats = u.NewStats
-
-	if s.AlarmIsActive == u.AlarmState.IsActive {
+	if s.AlarmIsActive == alarmIsActive {
 		return
 	}
-	var msg string
-	if u.AlarmState.IsActive {
-		msg = fmt.Sprintf(strAlarmTriggered, u.AlarmState.AverageHitCount)
-	} else {
-		msg = fmt.Sprintf(strAlarmRecovered, u.AlarmState.AverageHitCount)
-	}
-	s.Alarms = append(s.Alarms, msg)
-	s.AlarmIsActive = u.AlarmState.IsActive
+	s.Alarms = append(s.Alarms, Alarm{
+		Timestamp:   s.CurrentStats.DateEnd,
+		Active:      alarmIsActive,
+		AverageHits: averageHitCount,
+	})
+	s.AlarmIsActive = alarmIsActive
 }
 
 func (s *State) IsValid() bool {

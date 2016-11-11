@@ -2,6 +2,7 @@ package ui
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -16,19 +17,26 @@ func render(t *testing.T, s *State) string {
 	return r.Result()
 }
 
-func TestRendererAlarmOn(t *testing.T) {
+func TestRendererAlarms(t *testing.T) {
 
-	s := render(t, &State{
-		AlarmIsActive: true,
-		Alarms: []string{
-			"alarm 1",
-			"alarm 2",
+	ts1 := time.Now()
+	ts2 := ts1.Add(1 * time.Second)
+	render(t, &State{
+		AlarmIsActive: false,
+		Alarms: []Alarm{
+			Alarm{
+				Timestamp:   ts1,
+				Active:      true,
+				AverageHits: 15,
+			},
+			Alarm{
+				Timestamp:   ts2,
+				Active:      false,
+				AverageHits: 10,
+			},
 		},
 	})
 
-	assert.Regexp(t, `\balarm 1\b`, s)
-	assert.Regexp(t, `\balarm 2\b`, s)
-	assert.Regexp(t, `High traffic`, s)
 }
 
 func TestRendererInitial(t *testing.T) {

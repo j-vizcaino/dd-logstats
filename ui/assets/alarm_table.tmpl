@@ -3,11 +3,28 @@
   <div class="panel-heading">
     <h3>Alarms history</h3>
   </div>
-  {{ if .Alarms }}
+  {{if .Alarms}}
   <table class="table">
   <tbody>
     {{range .Alarms}}
-    <tr><td>{{.}}</td></tr>
+    <tr>
+      <td>
+      {{if .Active}}
+      <i class="text-danger glyphicon glyphicon-alert"></i>
+      {{else}}
+      <i class="text-info glyphicon glyphicon-info-sign"></i>
+      {{end}}
+      </td>
+      <td>{{.Timestamp}}</td>
+      <td>
+      {{if .Active}}
+      High traffic generated an alarm
+      {{else}}
+      Traffic returned to normal
+      {{end}}
+      (avg hits={{.AverageHits}})
+      </td>
+    </tr>
     {{end}}
   </tody>
   </table>
