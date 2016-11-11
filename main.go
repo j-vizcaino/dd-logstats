@@ -63,7 +63,10 @@ func runTrackers(logs chan *engine.LogEntry, context ui.Renderer, quit, done cha
 			// Update state
 			uiState.Update(stats, ht.IsAboveThreshold(), ht.AverageHitCount())
 			// Render template
-			context.Render(&uiState)
+			err := context.Render(&uiState)
+			if err != nil {
+				glog.Errorf("Error rendering template: %s", err)
+			}
 			stats = engine.NewStats()
 
 		case l := <-logs:
