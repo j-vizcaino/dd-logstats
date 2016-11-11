@@ -114,7 +114,7 @@ func main() {
 	logs := make(chan *engine.LogEntry, logEntryBufferSize)
 	quit, done := make(chan bool), make(chan bool)
 
-	context, err := ui.NewRenderer("ui/assets")
+	context, err := ui.NewRenderer("ui/assets", flagStatsPeriod, flagAlarmThreshold, flagAlarmTimeFrame)
 	if err != nil {
 		glog.Errorf("Failed to setup template renderer (%s)", err)
 		os.Exit(1)

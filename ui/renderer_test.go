@@ -8,7 +8,7 @@ import (
 )
 
 func render(t *testing.T, s *State) string {
-	r, err := NewRenderer("assets")
+	r, err := NewRenderer("assets", 10*time.Second, 100, time.Minute)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, r.Result())
 

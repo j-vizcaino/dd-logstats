@@ -1,8 +1,9 @@
-{{define "index"}}
+{{define "header"}}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="refresh" content="{{.RefreshPeriod}}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -14,14 +15,15 @@
   <body>
     <div class="container">
       <div class="row">
-        <div class="col-lg-8">
+        <div class="page-header">
+          <h1>Log monitoring application</h1>
         </div>
-        <div class="col-lg-4">
-          {{template "alarm_banner" .}}
-          {{template "alarm_table" .}} 
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <span class="text-info">This page displays statistics regarding site hits and alarms.</span><br/>
+            Hit stats are updated every {{.StatsPeriod}} and alarm is raised when average hit count exceeds {{.AlarmThreshold}} over the last {{.AlarmPeriod}}.
+          </div>
         </div>
       </div>
-    </div>
-  </body>
-</html>
+      <div class="row">
 {{end}}
