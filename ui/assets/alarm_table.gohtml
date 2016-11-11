@@ -1,4 +1,5 @@
 {{define "alarm_table"}}
+{{$dateFormat := "2006-01-02 15:04:05"}}
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3>Alarms history (UTC)</h3>
@@ -15,7 +16,7 @@
       <i class="text-info glyphicon glyphicon-info-sign"></i>
       {{end}}
       </td>
-      <td>{{.Timestamp.Format "2006-01-02 15:04:05"}}</td>
+      <td>{{.Timestamp.Format $dateFormat}}</td>
       <td>
       {{if .Active}}
       High traffic generated an alarm
