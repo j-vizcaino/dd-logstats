@@ -29,8 +29,13 @@ func (ht *HitTracker) AddHits(nbHits uint64) {
 // IsAboveThreshold checks if the total number of hits are greater than
 // the maximum threshold.
 func (ht *HitTracker) IsAboveThreshold() bool {
+	return ht.AverageHitCount() > ht.AvgThreshold
+}
+
+// AverageHitCount returns the average number of hits spanning
+// the history time period.
+func (ht *HitTracker) AverageHitCount() uint64 {
 	size := uint64(len(ht.Hits))
 	// Division, rounded up
-	avg := (ht.TotalHits + size - 1) / size
-	return avg > ht.AvgThreshold
+	return (ht.TotalHits + size - 1) / size
 }

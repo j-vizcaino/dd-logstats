@@ -27,10 +27,12 @@ func TestHitTracker(t *testing.T) {
 	ht.AddHits(8)
 	ht.AddHits(5)
 	assert.EqualValues(t, 15, ht.TotalHits)
+	assert.EqualValues(t, 5, ht.AverageHitCount())
 	assert.False(t, ht.IsAboveThreshold())
 
 	ht.AddHits(3)
 	assert.EqualValues(t, 16, ht.TotalHits)
+	assert.EqualValues(t, 6, ht.AverageHitCount())
 	assert.True(t, ht.IsAboveThreshold())
 
 	ht.AddHits(0)
